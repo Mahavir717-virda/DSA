@@ -1,161 +1,175 @@
+#include <cmath>
+#include <cstdio>
+#include <vector>
 #include <iostream>
+#include <algorithm>
 using namespace std;
-
+int count1 =0;
 struct node
 {
     int data;
     node *next;
     node *prev;
-} *lptr = NULL, *rptr = NULL;
+} *lptr=NULL,*rptr=NULL;
 
-void create(int data)
+void inserfront(int data)
 {
-    node *head = new node;
-    head->data = data;
-    head->next = NULL;
-    head->prev = NULL;
-
-    lptr = rptr = head;
-    cout << "Head created successfully...." << endl;
+    node *newnode= new node;
+    newnode->data=data;
+    newnode->next=NULL;
+    newnode->prev=NULL;
+    if(lptr==NULL)
+    {
+        lptr=rptr=newnode;
+    }
+    else
+    {
+        newnode->next=lptr;
+        lptr->prev=newnode;
+        lptr=newnode;
+    }
 }
 
-void InsertAtEnd(int data)
+void insertend(int data)
 {
     node *newnode = new node;
-    newnode->data = data;
-    newnode->next = NULL;
-    newnode->prev = NULL;
-
-    if (lptr == NULL)
+        newnode->data=data;
+        newnode->next=NULL;
+        newnode->prev=NULL;
+    if(lptr==NULL)
     {
-        lptr = rptr = newnode;
+        lptr=rptr=newnode;
     }
     else
     {
-        newnode->prev = rptr->next;
-        rptr->next = newnode;
-        rptr = newnode;
-        cout << "Element inserted at end successfully...." << endl;
-    }
-}
-
-void InsertAtFront(int data)
-{
-    node *newnode = new node;
-    newnode->data = data;
-    newnode->next = NULL;
-    newnode->prev = NULL;
-
-    if (lptr == NULL)
-    {
-        lptr = rptr = newnode;
-    }
-    else
-    {
-        lptr->prev = newnode;
-        newnode->next = lptr;
-        newnode->prev = NULL;
-        lptr = newnode;
-    }
-}
-
-void InsertAfterIndex(int data, int index)
-{
-    int count = 0;
-    node *newnode = new node;
-    newnode->data = data;
-    newnode->next = NULL;
-    newnode->prev = NULL;
-
-    if (lptr == NULL)
-    {
-        lptr = rptr = newnode;
-    }
-    else
-    {
-        node *temp = lptr;
-        while (temp != NULL)
-        {
-            if (count == index)
-            {
-                newnode->next = temp->next->next;
-                temp->next = newnode;
-                newnode->prev = temp;
-                temp->next->next->prev = newnode;
-                break;
-            }
-            count++;
-            temp = temp->next;
-        }
-    }
-}
-
-void display()
-{
-    if (lptr == NULL)
-        cout << "DLL is Empty..." << endl;
-    else
-    {
-        node *temp = lptr;
-        while (temp != NULL)
-        {
-            cout << temp->data << " ";
-            temp = temp->next;
-        }
-        cout << "NULL" << endl;
+        newnode->prev=rptr;
+        rptr->next=newnode;
+        rptr=newnode;
     }
 }
 
 void deletefront()
 {
-    if (lptr == NULL)
+    if(lptr==NULL)
     {
-        cout << "List is empty";
+        cout<<"List is Empty";
     }
     else
     {
         node *temp = lptr;
-        lptr = lptr->next;
-        lptr->prev = NULL;
-         free(temp);
+        lptr=lptr->next;
+        lptr->prev=NULL;
+        free(temp);
     }
 }
 
 void deletelast()
 {
-    if (lptr == NULL)
+    if(lptr==NULL)
     {
-        cout << "List is empty";
+                cout<<"List is Empty";
     }
     else
     {
         node *temp = rptr;
         rptr = rptr->prev;
-        rptr->next = NULL;
+        rptr->next=NULL;
         free(temp);
     }
 }
-int main()
+
+void insertafterindex(int olddata,int newdata)
+    
 {
-    create(17);
+    int count=0;
+    node *newnode = new node;
+    newnode->data=newdata;
+    newnode->next=NULL;
+    newnode->prev=NULL;
+    
+    if(lptr==NULL)
+    {
+        lptr=rptr=newnode;
+    }
+    else
+    {
+        node *temp = lptr;
+        while(temp!=NULL)
+        {
+            if(olddata == temp->data)
+            {
+                 newnode->prev = temp;
+                 newnode->next = temp->next;
+                 temp->next=newnode;
+            }
+            temp=temp->next;
+        }
+    }
+}
 
-    InsertAtEnd(1);
-    InsertAtEnd(2);
-    InsertAtEnd(3);
-
-    InsertAtFront(0);
-
-    InsertAfterIndex(5, 1);
-
-    // display();
-
-
-    // deletefront();
-    // deletefront();
-
-    // deletelast();
-    // deletelast();
-
-    display();
+int countnumber()
+{
+    if(lptr==NULL)
+    {
+        return 0;
+    }
+    else
+    {
+        while(lptr!=NULL)
+        {
+            count1++;
+            lptr=lptr->next;
+        }
+}
+    return count1;
+}
+void display()
+{   
+   node *temp = lptr;
+        while(temp!=NULL)
+        {
+            cout << temp->data << " ";
+            temp=temp->next;
+        }
+    cout<<endl;
+ }
+int main() {
+      
+    int choice = -1;
+     int data,index;
+   
+    while(choice != 0)
+    {
+         cin>>choice;
+    switch(choice)
+    {
+        case 1: 
+            cin>>data;
+            inserfront(data);        
+            break;
+        case 2:
+            cin>>data;
+            insertend(data);
+            break;
+        case 3:
+            deletefront();
+            break;
+        case 4:
+            deletelast();
+            break;
+        case 5:
+            cin>>index>>data;
+            insertafterindex(index,data);
+            break;
+        case 6:
+            display();
+            break;
+        case 7:
+            cout << countnumber();
+            break;
+        case 0: 
+            exit(0);
+    }
+    }
     return 0;
 }
