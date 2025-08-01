@@ -81,7 +81,7 @@ void InsertAfterIndex(int data, int index)
                 newnode->next = temp->next->next;
                 temp->next = newnode;
                 newnode->prev = temp;
-                temp->next->next->prev=newnode;
+                temp->next->next->prev = newnode;
                 break;
             }
             count++;
@@ -105,6 +105,36 @@ void display()
         cout << "NULL" << endl;
     }
 }
+
+void deletefront()
+{
+    if (lptr == NULL)
+    {
+        cout << "List is empty";
+    }
+    else
+    {
+        node *temp = lptr;
+        lptr = lptr->next;
+        lptr->prev = NULL;
+         free(temp);
+    }
+}
+
+void deletelast()
+{
+    if (lptr == NULL)
+    {
+        cout << "List is empty";
+    }
+    else
+    {
+        node *temp = rptr;
+        rptr = rptr->prev;
+        rptr->next = NULL;
+        free(temp);
+    }
+}
 int main()
 {
     create(17);
@@ -116,6 +146,15 @@ int main()
     InsertAtFront(0);
 
     InsertAfterIndex(5, 1);
+
+    // display();
+
+
+    // deletefront();
+    // deletefront();
+
+    // deletelast();
+    // deletelast();
 
     display();
     return 0;
